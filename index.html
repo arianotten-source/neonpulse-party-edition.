@@ -2,607 +2,90 @@
 <html lang="nl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="theme-color" content="#171522">
-<title>NeonPulse Party Edition</title>
+<meta name="description" content="Pim Pam Pet – NeonPulse Party Edition">
+<title>Pim Pam Pet – NeonPulse Party Edition</title>
 <style>
-:root{--bg:#171522;--panel:#242035;--gold:#ffd66b;--pink:#f6a6c8;--red:#d92d48;--ink:#fff9ef;--muted:#c9c2d8}
-*{box-sizing:border-box}
-body{margin:0;background:radial-gradient(ellipse at top,#3c254d 0,#171522 58%);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}
-.app{max-width:650px;margin:auto;padding:16px 14px 28px}
-header{text-align:center;padding:10px 0 18px}
-.kicker{font-size:.75rem;letter-spacing:.22em;color:var(--gold);font-weight:800}
-h1{font-size:clamp(2rem,9vw,3.3rem);line-height:.95;margin:9px 0;color:#fff;text-shadow:0 3px 0 #8f2748,0 0 22px #ff6c9d88;font-weight:1000}
-.subtitle{color:var(--pink);font-weight:800;letter-spacing:.18em;font-size:.85rem}
-.panel{background:linear-gradient(145deg,#2b253b,#201b2d);border:1px solid #62506f;border-radius:18px;padding:16px;margin:12px 0;box-shadow:0 9px 22px #0003}
-label{display:block;font-size:.88rem;color:var(--muted);margin-bottom:6px}
-input,select{width:100%;border-radius:10px;border:1px solid #6e617c;background:#171522;color:white;padding:12px;font:inherit}
-button{border:0;border-radius:12px;padding:13px 16px;font:inherit;font-weight:850;cursor:pointer;touch-action:manipulation}
-button:active{transform:scale(.98)}
-.primary{background:linear-gradient(180deg,#f34b62,#bd1e40);color:white;box-shadow:0 4px 0 #74132c}
-.secondary{background:#393149;color:var(--gold);border:1px solid #79658b}
-.gold{background:linear-gradient(180deg,#ffe99b,#eebd45);color:#2a2032;box-shadow:0 4px 0 #9b6e22}
-.row{display:flex;gap:9px;align-items:center}
-.row>*{flex:1;min-width:0}
-.hidden{display:none!important}
-.players{display:grid;gap:8px;margin-top:10px}
-.player{display:flex;align-items:center;gap:9px;background:#171522;border:1px solid #4b405d;padding:9px 10px;border-radius:11px}
-.player .dot{width:13px;height:13px;border-radius:50%;flex:none}
-.player .name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.player .score{font-weight:900;color:var(--gold);font-variant-numeric:tabular-nums}
-.player.active{border:2px solid var(--gold);background:#393047}
-.wheel-wrap{position:relative;width:min(86vw,390px);aspect-ratio:1;margin:8px auto 18px}
-.pointer{position:absolute;z-index:3;top:-7px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:19px solid transparent;border-right:19px solid transparent;border-top:36px solid var(--gold);filter:drop-shadow(0 3px 2px #0008)}
-#wheel{width:100%;height:100%;border-radius:50%;border:9px solid #f9d16d;box-shadow:0 0 0 5px #6c3b64,0 0 25px #ffcf6c66;transition:transform 5.2s cubic-bezier(.12,.72,.12,1);display:block}
-.center-cap{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:20%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 30% 25%,#fff5c5,#e4a92e 65%,#78441c);border:5px solid #fff0b0;box-shadow:0 2px 8px #0008}
-.stats{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:.88rem}
-.big-letter{font-size:4rem;line-height:1;font-weight:1000;color:var(--gold);text-shadow:0 3px 0 #9e6124}
-.task{font-size:1.2rem;font-weight:750;line-height:1.35;margin:10px 0 14px}
-.timer{font-size:2.2rem;font-weight:1000;color:#ff718a;font-variant-numeric:tabular-nums}
-.pill{display:inline-block;border:1px solid #756187;border-radius:99px;padding:5px 10px;color:var(--pink);font-size:.78rem;font-weight:800}
-.scoreline{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #4b405d}
-.scoreline:last-child{border:0}
-.note{font-size:.82rem;color:var(--muted);line-height:1.4}
-h2{font-size:1.15rem;margin:0 0 12px}
-footer{text-align:center;color:#a9a0ba;font-size:.75rem;padding:12px}
-
-.game-top{padding:10px;margin-bottom:8px}
-.game-top .players{display:flex;overflow-x:auto;gap:6px;margin-top:7px}
-.game-top .player{min-width:96px;padding:6px;font-size:.82rem}
-.play-layout{display:grid;grid-template-columns:minmax(0,1.02fr) minmax(0,.98fr);gap:8px;align-items:start}
-.wheel-panel{padding:10px;min-width:0}
-.wheel-wrap{width:min(100%,360px);margin:9px auto 12px}
-.challenge-column{min-width:0}
-.challenge-column .panel{padding:12px;margin-top:0}
-.challenge-column .big-letter{font-size:3rem}
-.challenge-column .task{font-size:1rem;margin:8px 0}
-.challenge-column .row{flex-direction:column}
-.challenge-column .row button{width:100%;padding:10px 6px;font-size:.86rem}
-.scoreboard-panel{margin-top:8px}
-@media(max-width:540px){
- .app{padding:6px 7px 16px}
- header{padding:2px 0 7px}
- header h1{font-size:1.9rem;margin:5px 0}
- .subtitle{font-size:.65rem}
- .game-top{padding:8px;margin:5px 0}
- .game-top .player{min-width:86px;font-size:.75rem}
- .play-layout{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:6px}
- .wheel-panel{padding:7px}
- .wheel-wrap{width:100%;margin:9px auto}
- .wheel-panel .pill{font-size:.62rem;padding:4px 6px}
- .wheel-panel button{padding:9px 4px;font-size:.78rem!important}
- .wheel-panel .note{font-size:.66rem}
- .challenge-column .panel{padding:9px;margin-bottom:7px}
- .challenge-column .big-letter{font-size:2.6rem}
- .challenge-column .task{font-size:.85rem;line-height:1.22}
- .challenge-column .timer{font-size:1.6rem}
- .challenge-column .row button{font-size:.76rem;padding:9px 4px}
- .challenge-column .note{font-size:.68rem}
- .scoreboard-panel{padding:9px}
-}
-
-
-#game .scoreboard-panel,#game #endGame{display:none}
-.play-layout{grid-template-columns:1fr;max-width:560px;margin:0 auto}
-.wheel-panel{padding:12px}
-.wheel-wrap{width:min(72vw,340px);margin:9px auto 12px}
-.challenge-column{max-width:560px;margin:0 auto;width:100%}
-.challenge-column .panel{padding:16px}
-.challenge-column .row{flex-direction:row}
-.challenge-column .row button{font-size:.95rem;padding:12px 8px}
-@media(max-width:540px){
- .play-layout{display:flex;flex-direction:column;gap:8px}
- .wheel-panel,.challenge-column .panel{width:100%;padding:10px}
- .wheel-wrap{width:min(66vw,260px);margin:8px auto 10px}
- .challenge-column .big-letter{font-size:2.8rem}
- .challenge-column .task{font-size:1.02rem;line-height:1.25}
- .challenge-column .row{flex-direction:row}
- .challenge-column .row button{font-size:.82rem;padding:10px 5px}
-}
-
-
-.category-box{border:1px solid #62506f;border-radius:13px;padding:12px;background:#1b1728}
-.category-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.category-option{display:flex;align-items:center;gap:8px;margin:0;padding:10px;background:#30283e;border:1px solid #5d4b6d;border-radius:10px;color:var(--ink);font-size:.88rem}
-.category-option input{width:18px;height:18px;accent-color:#f4cf58;flex:none;margin:0}
-@media(max-width:380px){.category-grid{grid-template-columns:1fr}}
-
-/* Winner celebration splash */
-#winnerSplash{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;background:radial-gradient(circle at top,#51236c 0,#171522 72%);overflow:hidden;text-align:center}
-#winnerSplash.hidden{display:none!important}
-.winner-card{position:relative;z-index:2;width:min(100%,520px);padding:30px 20px;border:2px solid #ff72d2;border-radius:28px;background:linear-gradient(145deg,#30213fef,#171522f5);box-shadow:0 0 35px #f04fc777,inset 0 0 25px #6c4d8b66;animation:winnerPop .65s cubic-bezier(.2,.9,.3,1.2) both}
-.winner-crown{font-size:4rem;filter:drop-shadow(0 0 12px #ffd66b);animation:crownBounce 1.1s ease-in-out infinite alternate}
-.winner-kicker{color:#ffd66b;font-weight:900;letter-spacing:.2em;font-size:.8rem}
-#winnerName{font-size:clamp(2.2rem,10vw,4rem);font-weight:1000;line-height:1.05;margin:12px 0;color:#fff;text-shadow:0 3px 0 #9b246a,0 0 24px #ff5fc8;overflow-wrap:anywhere}
-.winner-subtitle{font-size:1.1rem;color:#65f5ff;font-weight:900;letter-spacing:.08em}
-.winner-points{margin:12px 0 22px;color:#ffd66b;font-size:1.25rem;font-weight:900}
-.confetti-piece{position:absolute;top:-15px;width:10px;height:16px;opacity:.95;animation:confettiFall var(--fall,3.8s) linear var(--delay,0s) infinite;border-radius:2px}
-@keyframes confettiFall{0%{transform:translate3d(0,-5vh,0) rotate(0deg)}100%{transform:translate3d(var(--drift,30px),110vh,0) rotate(760deg)}}
-@keyframes winnerPop{from{transform:scale(.65);opacity:0}to{transform:scale(1);opacity:1}}
-@keyframes crownBounce{from{transform:translateY(0) rotate(-4deg)}to{transform:translateY(-8px) rotate(4deg)}}
-@media(prefers-reduced-motion:reduce){.confetti-piece,.winner-card,.winner-crown{animation:none!important}}
-
-
-
-.wheel-heading{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap}
-.mute-button{padding:7px 10px;border-radius:999px;background:#393149;color:var(--gold);border:1px solid #79658b;font-size:.78rem}
-.mute-button[aria-pressed="true"]{color:var(--muted);background:#211c2e}
-
-
-/* Intro splash */
-#introSplash{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;padding:22px;overflow:hidden;text-align:center;background:radial-gradient(ellipse at 50% 20%,#522366 0,#24162f 48%,#171522 78%)}
-#introSplash.hidden{display:none!important}
-.intro-card{position:relative;z-index:2;width:min(100%,520px);padding:28px 20px 30px;border:2px solid #ff72d2;border-radius:30px;background:linear-gradient(145deg,#30213ff2,#171522f5);box-shadow:0 0 38px #f04fc777,inset 0 0 25px #6c4d8b66}
-.intro-eyebrow{color:var(--gold);font-size:.78rem;letter-spacing:.2em;font-weight:900}
-.intro-wheel{width:clamp(150px,42vw,220px);height:auto;display:block;margin:12px auto 18px;filter:drop-shadow(0 0 18px #ffd66b88)}
-.intro-wheel-rotor{transform-origin:110px 92px;transform-box:view-box;animation:introSpin 12s linear infinite}
-.intro-title{font-size:clamp(2.4rem,11vw,4.1rem);line-height:.95;margin:10px 0;color:#fff;font-weight:1000;text-shadow:0 4px 0 #8f2748,0 0 24px #ff6c9d99}
-.intro-subtitle{color:var(--pink);font-weight:900;letter-spacing:.15em;font-size:.85rem;margin:12px 0 18px}
-.intro-tagline{color:#65f5ff;font-size:1.05rem;font-weight:850;margin:16px 0 24px}
-.intro-confetti{position:absolute;inset:0;pointer-events:none;overflow:hidden}
-.intro-confetti span{position:absolute;top:-25px;width:10px;height:18px;border-radius:3px;animation:confettiFall var(--fall,4s) linear var(--delay,0s) infinite}
-#introStart{width:100%;font-size:1.12rem;padding:16px;background:linear-gradient(180deg,#ffe99b,#eebd45);color:#2a2032;box-shadow:0 5px 0 #9b6e22}
-@keyframes introSpin{to{transform:rotate(360deg)}}
-@media(prefers-reduced-motion:reduce){.intro-wheel,.intro-confetti span{animation:none!important}}
-
+:root{--bg:#171522;--panel:#242035;--gold:#ffd66b;--pink:#f6a6c8;--ink:#fff9ef;--muted:#c9c2d8;--cyan:#65f5ff}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#3c254d,#171522 58%);color:var(--ink);font-family:system-ui,sans-serif;min-height:100vh}
+.app{max-width:650px;margin:auto;padding:10px 12px 24px}header{text-align:center;padding:8px 0 14px}.kicker{font-size:.75rem;letter-spacing:.2em;color:var(--gold);font-weight:800}
+h1{font-size:clamp(2rem,9vw,3.2rem);line-height:.95;margin:9px 0;color:white;text-shadow:0 3px 0 #8f2748,0 0 22px #ff6c9d88;font-weight:1000}.subtitle{color:var(--pink);font-weight:800;letter-spacing:.12em;font-size:.8rem}
+.panel{background:linear-gradient(145deg,#2b253b,#201b2d);border:1px solid #62506f;border-radius:18px;padding:15px;margin:12px 0;box-shadow:0 9px 22px #0003}
+label{display:block;font-size:.88rem;color:var(--muted);margin-bottom:6px}input,select{width:100%;border-radius:10px;border:1px solid #6e617c;background:#171522;color:white;padding:11px;font:inherit}
+button{border:0;border-radius:12px;padding:12px 14px;font:inherit;font-weight:850;cursor:pointer;touch-action:manipulation}.primary{background:linear-gradient(#f34b62,#bd1e40);color:white}.secondary{background:#393149;color:var(--gold);border:1px solid #79658b}.gold{background:linear-gradient(#ffe99b,#eebd45);color:#2a2032}
+.row{display:flex;gap:8px;align-items:center}.row>*{flex:1;min-width:0}.hidden{display:none!important}.players{display:grid;gap:8px;margin-top:10px}.player{display:flex;align-items:center;gap:9px;background:#171522;border:1px solid #4b405d;padding:9px 10px;border-radius:11px}.dot{width:13px;height:13px;border-radius:50%;flex:none}
+.stats{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:.88rem}.big-letter{font-size:3.5rem;line-height:1;font-weight:1000;color:var(--gold)}.task{font-size:1.1rem;font-weight:750;line-height:1.35;margin:10px 0 14px}.timer{font-size:2rem;font-weight:1000;color:#ff718a}.pill{display:inline-block;border:1px solid #756187;border-radius:99px;padding:5px 10px;color:var(--pink);font-size:.78rem;font-weight:800}
+.scoreline{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #4b405d}.note{font-size:.82rem;color:var(--muted);line-height:1.4}h2{font-size:1.15rem;margin:0 0 12px}
+.category-box{border:1px solid #62506f;border-radius:13px;padding:12px;background:#1b1728}.category-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.category-option{display:flex;align-items:center;gap:8px;margin:0;padding:9px;background:#30283e;border:1px solid #5d4b6d;border-radius:10px;color:var(--ink);font-size:.88rem}.category-option input{width:18px;height:18px;accent-color:#f4cf58;flex:none;margin:0}
+.wheel-wrap{position:relative;width:min(76vw,330px);aspect-ratio:1;margin:12px auto}.pointer{position:absolute;z-index:3;top:-7px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:17px solid transparent;border-right:17px solid transparent;border-top:32px solid var(--gold)}#wheel{width:100%;height:100%;border-radius:50%;border:8px solid #f9d16d;box-shadow:0 0 0 4px #6c3b64,0 0 25px #ffcf6c66;transition:transform 5.2s cubic-bezier(.12,.72,.12,1);display:block}.center-cap{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:20%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 30% 25%,#fff5c5,#e4a92e 65%,#78441c);border:5px solid #fff0b0}
+.intro-splash{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;padding:18px;overflow:auto;text-align:center;background:radial-gradient(ellipse at 50% 20%,#522366,#24162f 48%,#171522 78%)}.intro-card{width:min(100%,520px);padding:24px 20px;border:2px solid #ff72d2;border-radius:30px;background:linear-gradient(145deg,#30213ff2,#171522f5);box-shadow:0 0 38px #f04fc777}.intro-wheel{width:clamp(130px,38vw,190px);display:block;margin:10px auto 14px;filter:drop-shadow(0 0 18px #ffd66b88)}.rotor{transform-origin:110px 92px;transform-box:view-box;animation:spin 12s linear infinite}.intro-title{font-size:clamp(2.4rem,11vw,4.1rem);line-height:.95;margin:10px 0;color:#fff;font-weight:1000;text-shadow:0 4px 0 #8f2748,0 0 24px #ff6c9d99}.intro-tagline{color:var(--cyan);font-size:1rem;font-weight:850;margin:15px 0 20px}
+.download-app{display:block;margin-top:12px;padding:12px 15px;border:1px solid var(--cyan);border-radius:12px;background:#242035;color:var(--cyan);font-weight:850;text-decoration:none;box-shadow:0 0 14px #65f5ff33}
+footer{text-align:center;color:#a9a0ba;font-size:.8rem;padding:14px 4px 8px}footer a{color:var(--cyan);text-decoration:underline;margin:0 6px}.legal-panel{font-size:.9rem;line-height:1.5}
+#winnerSplash{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;background:radial-gradient(circle at top,#51236c,#171522 72%);text-align:center}.winner-card{width:min(100%,520px);padding:28px 20px;border:2px solid #ff72d2;border-radius:28px;background:linear-gradient(145deg,#30213fef,#171522f5);box-shadow:0 0 35px #f04fc777}#winnerName{font-size:clamp(2.2rem,10vw,4rem);font-weight:1000;line-height:1.05;margin:12px 0;overflow-wrap:anywhere}
+@keyframes spin{to{transform:rotate(360deg)}}@media(max-width:540px){.app{padding:6px 7px 16px}.panel{padding:11px}.category-grid{grid-template-columns:1fr 1fr}}@media(max-width:380px){.category-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-<div id="introSplash" role="dialog" aria-label="Welkom bij Pim Pam Pet">
-  <div class="intro-confetti" id="introConfetti" aria-hidden="true"></div>
-  <div class="intro-card">
-    <div class="intro-eyebrow">THE GREAT GAME SHOW</div>
-    <svg class="intro-wheel" viewBox="0 0 220 190" role="img" aria-label="Een draaiend reuzenrad met stilstaande poten">
-      <defs>
-        <linearGradient id="wheelMetal" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff0ad"/><stop offset=".5" stop-color="#ffd66b"/><stop offset="1" stop-color="#b66b27"/></linearGradient>
-        <linearGradient id="wheelLeg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d9d6e8"/><stop offset="1" stop-color="#736a91"/></linearGradient>
-      </defs>
-      <!-- Steunpoten blijven stil staan -->
-      <g stroke="url(#wheelLeg)" stroke-width="9" stroke-linecap="round" fill="none">
-        <path d="M110 91 L64 177"/><path d="M110 91 L158 177"/><path d="M48 177 H174"/>
-      </g>
-      <!-- Alleen het rad, de spaken en de gondels draaien -->
-      <g class="intro-wheel-rotor">
-        <circle cx="110" cy="92" r="61" fill="#211a31" stroke="url(#wheelMetal)" stroke-width="6"/>
-        <circle cx="110" cy="92" r="49" fill="none" stroke="#c8d7ed" stroke-width="2.5" opacity=".9"/>
-        <g stroke="#c8d7ed" stroke-width="3" stroke-linecap="round">
-          <path d="M110 92 V31 M110 92 L153 49 M110 92 H171 M110 92 L153 135 M110 92 V153 M110 92 L67 135 M110 92 H49 M110 92 L67 49"/>
-        </g>
-        <g stroke="#ffd66b" stroke-width="2.5" fill="#ff4fa3">
-          <circle cx="110" cy="31" r="9"/><circle cx="153" cy="49" r="9" fill="#65f5ff"/><circle cx="171" cy="92" r="9" fill="#ffd66b"/><circle cx="153" cy="135" r="9" fill="#65f5ff"/><circle cx="110" cy="153" r="9" fill="#ff4fa3"/><circle cx="67" cy="135" r="9" fill="#ffd66b"/><circle cx="49" cy="92" r="9" fill="#65f5ff"/><circle cx="67" cy="49" r="9" fill="#ff4fa3"/>
-        </g>
-        <circle cx="110" cy="92" r="10" fill="#64ef9b" stroke="#fff0ad" stroke-width="3"/>
-      </g>
-    </svg>
-    <div class="intro-title">PIM PAM PET</div>
-    <div class="intro-subtitle">NEONPULSE PARTY EDITION</div>
-    <div class="intro-tagline">DRAAI HET RAD. DENK SNEL. SCOOR PUNTEN!</div>
-    <button id="introStart" type="button">SPELEN ▶</button>
-    <p class="note" style="margin:18px 0 0">Het feest begint hier!</p>
-  </div>
-</div>
+<div id="introSplash" class="intro-splash" role="dialog" aria-label="Welkom bij Pim Pam Pet"><div class="intro-card">
+<div class="kicker">THE GREAT GAME SHOW</div>
+<svg class="intro-wheel" viewBox="0 0 220 190" role="img" aria-label="Draaiend rad"><defs><linearGradient id="metal" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff0ad"/><stop offset=".5" stop-color="#ffd66b"/><stop offset="1" stop-color="#b66b27"/></linearGradient></defs><g stroke="#9b91b4" stroke-width="9" stroke-linecap="round" fill="none"><path d="M110 91 L64 177"/><path d="M110 91 L158 177"/><path d="M48 177 H174"/></g><g class="rotor"><circle cx="110" cy="92" r="61" fill="#211a31" stroke="url(#metal)" stroke-width="6"/><circle cx="110" cy="92" r="49" fill="none" stroke="#c8d7ed" stroke-width="2.5"/><g stroke="#c8d7ed" stroke-width="3"><path d="M110 92 V31 M110 92 L153 49 M110 92 H171 M110 92 L153 135 M110 92 V153 M110 92 L67 135 M110 92 H49 M110 92 L67 49"/></g><g stroke="#ffd66b" stroke-width="2.5" fill="#ff4fa3"><circle cx="110" cy="31" r="9"/><circle cx="153" cy="49" r="9" fill="#65f5ff"/><circle cx="171" cy="92" r="9" fill="#ffd66b"/><circle cx="153" cy="135" r="9" fill="#65f5ff"/><circle cx="110" cy="153" r="9"/><circle cx="67" cy="135" r="9" fill="#ffd66b"/><circle cx="49" cy="92" r="9" fill="#65f5ff"/><circle cx="67" cy="49" r="9"/></g><circle cx="110" cy="92" r="10" fill="#64ef9b" stroke="#fff0ad" stroke-width="3"/></g></svg>
+<div class="intro-title">PIM PAM PET</div><div class="subtitle">NEONPULSE PARTY EDITION</div><div class="intro-tagline">DRAAI HET RAD. DENK SNEL. SCOOR PUNTEN!</div>
+<button id="introStart" class="gold" style="width:100%;font-size:1.1rem;padding:15px">SPELEN ▶</button>
+<a class="download-app" href="https://play.google.com/store/search?q=NeonPulse%20Party%20Edition&c=apps" target="_blank" rel="noopener">DOWNLOAD DE ANDROID-APP</a>
+<p class="note">De app-link wordt later vervangen door de directe Google Play-link zodra de app gepubliceerd is.</p>
+</div></div>
 <div class="app">
-<header>
- <div class="kicker">THE GREAT GAME SHOW</div>
- <h1>PIM PAM PET</h1>
- <div class="subtitle">NEONPULSE PARTY EDITION</div>
-</header>
-
-<section id="setup" class="panel hidden">
- <h2>Wie speelt er mee?</h2>
- <div class="row">
- <div><label for="playerName">Spelersnaam</label><input id="playerName" maxlength="18" placeholder="Bijv. Arian"></div>
- <div style="flex:0 0 auto;align-self:end"><button id="addPlayer" class="secondary">+ Toevoegen</button></div>
- </div>
- <div id="playersSetup" class="players"></div>
-
- <div class="category-box" style="margin-top:15px">
- <h2>Categorieën kiezen</h2>
- <p class="note">Selecteer één of meerdere categorieën. Alleen de gekozen categorieën komen tijdens het spel voorbij.</p>
- <div class="category-grid">
- <label class="category-option"><input type="checkbox" name="category" value="dieren" checked> Dieren</label>
- <label class="category-option"><input type="checkbox" name="category" value="eten" checked> Eten en drinken</label>
- <label class="category-option"><input type="checkbox" name="category" value="beroepen" checked> Beroepen</label>
- <label class="category-option"><input type="checkbox" name="category" value="plaatsen" checked> Landen en plaatsen</label>
- <label class="category-option"><input type="checkbox" name="category" value="film" checked> Film en muziek</label>
- <label class="category-option"><input type="checkbox" name="category" value="gek" checked> Gekke opdrachten</label>
- <label class="category-option"><input type="checkbox" name="category" value="sport" checked> Sport</label>
- <label class="category-option"><input type="checkbox" name="category" value="voorwerpen" checked> Voorwerpen en merken</label>
- </div>
- </div>
-
- <div class="row" style="margin-top:15px">
- <div><label for="roundCount">Aantal vragen</label><select id="roundCount"><option>5</option><option selected>10</option><option>15</option><option>20</option></select></div>
- <div><label for="seconds">Antwoordtijd</label><select id="seconds"><option>5</option><option>10</option><option selected>12</option><option>15</option><option>20</option></select></div>
- </div>
- <button id="startGame" class="primary" style="width:100%;margin-top:15px">START HET SPEL</button>
- <p class="note">Voeg minimaal 2 spelers toe. Deze demo werkt lokaal op dit toestel; er is geen account nodig.</p>
-</section>
-
-<section id="game" class="hidden">
- <div class="play-layout">
- <div class="panel wheel-panel" style="text-align:center">
- <div class="wheel-heading">
- <span class="pill">HET ALFABETRAD</span>
- <button id="muteButton" class="mute-button" type="button" aria-pressed="false" aria-label="Geluid dempen">🔊 Geluid aan</button>
- </div>
- <div class="wheel-wrap"><div class="pointer"></div><canvas id="wheel" width="700" height="700" aria-label="Alfabetrad"></canvas><div class="center-cap"></div></div>
- <button id="spin" class="gold" style="width:100%;font-size:1.08rem">DRAAI HET RAD!</button>
- <div id="wheelStatus" class="note" style="margin-top:12px">Klaar voor de volgende letter?</div>
- </div>
- </div>
- <div class="challenge-column">
- <div id="challenge" class="panel hidden" style="text-align:center">
- <div id="taskCategory" class="pill">CATEGORIE</div>
- <div class="pill" style="margin-top:8px">JOUW LETTER IS</div>
- <div id="letter" class="big-letter">A</div>
- <div id="task" class="task"></div>
- <div id="timer" class="timer">00:10</div>
- <div class="row" style="margin-top:12px">
- <button id="wrong" class="secondary">Fout / geen antwoord</button>
- <button id="correct" class="primary">Goed antwoord +10</button>
- </div>
- <p class="note">De groep beoordeelt het antwoord. Dit is een lokale zonder automatische spraakcontrole.</p>
- </div>
- </div>
- </div>
- <div class="panel scoreboard-panel">
- <div class="stats"><span>Scorebord</span><span id="remainingLabel">Nog 10 vragen</span></div>
- <div id="scoreboard"></div>
- </div>
- <button id="endGame" class="secondary" style="width:100%">Spel beëindigen</button>
-</section>
-
-<section id="answerScreen" class="hidden">
- <div class="panel" style="text-align:center">
- <div class="kicker">ANTWOORDMOMENT</div>
- <h2 style="font-size:1.5rem;margin:8px 0">Wie had het goed?</h2>
- <div style="font-size:3.3rem;font-weight:1000;color:var(--gold)" id="answerLetter">A</div>
- <div class="task" id="answerTask"></div>
- <p class="note">Kies de speler die het goede antwoord gaf. Iedereen mag meedoen aan iedere vraag.</p>
- <div id="answerPlayers" class="players"></div>
- <button id="nobody" class="secondary" style="width:100%;margin-top:10px">Niemand had het goed</button>
- <div class="stats" style="margin-top:16px"><span>Scorebord</span><span id="answerRemaining">—</span></div>
- <div id="answerScoreboard"></div>
- <button id="nextQuestion" class="primary hidden" style="width:100%;margin-top:15px">VOLGENDE VRAAG</button>
- <button id="finishFromAnswer" class="secondary" style="width:100%;margin-top:9px">Spel beëindigen</button>
- </div>
-</section>
-
-<section id="results" class="panel hidden">
- <div class="kicker" style="text-align:center">DE UITSLAG</div>
- <h2 style="text-align:center;font-size:1.8rem;color:var(--gold);margin-top:8px">EINDSTAND</h2>
- <div id="finalScores"></div>
- <button id="playAgain" class="primary" style="width:100%;margin-top:16px">NOG EEN SPEL</button>
- <button id="editPlayers" class="secondary" style="width:100%;margin-top:9px">SPELERS AANPASSEN</button>
-</section>
-
-<section id="winnerSplash" class="hidden" aria-live="polite">
-  <div id="confettiLayer" aria-hidden="true"></div>
-  <div class="winner-card">
-    <div class="winner-crown">🏆</div>
-    <div class="winner-kicker">NEONPULSE PARTY EDITION</div>
-    <h2 style="font-size:1.6rem;margin:12px 0 4px">DE WINNAAR IS</h2>
-    <div id="winnerName">Winnaar</div>
-    <div class="winner-subtitle">GEWELDIG GESPEELD!</div>
-    <div id="winnerPoints" class="winner-points">0 punten</div>
-    <button id="winnerContinue" class="gold" style="width:100%">BEKIJK DE EINDSTAND</button>
-  </div>
-</section>
-
-<footer>NeonPulse Party Edition</footer>
+<header><div class="kicker">THE GREAT GAME SHOW</div><h1>PIM PAM PET</h1><div class="subtitle">NEONPULSE PARTY EDITION</div></header>
+<section id="setup" class="panel hidden"><h2>Wie speelt er mee?</h2><div class="row"><div><label for="playerName">Spelersnaam</label><input id="playerName" maxlength="18" placeholder="Bijv. speler 1"></div><button id="addPlayer" class="secondary" style="flex:0 0 auto;align-self:end">+ Toevoegen</button></div><div id="playersSetup" class="players"></div>
+<div class="category-box" style="margin-top:15px"><h2>Categorieën kiezen</h2><p class="note">Selecteer één of meerdere categorieën.</p><div class="category-grid">
+<label class="category-option"><input type="checkbox" name="category" value="dieren" checked>Dieren</label><label class="category-option"><input type="checkbox" name="category" value="eten" checked>Eten en drinken</label><label class="category-option"><input type="checkbox" name="category" value="beroepen" checked>Beroepen</label><label class="category-option"><input type="checkbox" name="category" value="plaatsen" checked>Landen en plaatsen</label><label class="category-option"><input type="checkbox" name="category" value="film" checked>Film en muziek</label><label class="category-option"><input type="checkbox" name="category" value="gek" checked>Gekke opdrachten</label><label class="category-option"><input type="checkbox" name="category" value="sport" checked>Sport</label><label class="category-option"><input type="checkbox" name="category" value="voorwerpen" checked>Voorwerpen en merken</label></div></div>
+<div class="row" style="margin-top:15px"><div><label for="roundCount">Aantal vragen</label><select id="roundCount"><option>5</option><option selected>10</option><option>15</option><option>20</option></select></div><div><label for="seconds">Antwoordtijd</label><select id="seconds"><option>5</option><option>10</option><option selected>12</option><option>15</option><option>20</option></select></div></div><button id="startGame" class="primary" style="width:100%;margin-top:15px">START HET SPEL</button><p class="note">Minimaal 2 spelers. Het spel werkt lokaal op dit toestel; er is geen account nodig.</p></section>
+<section id="game" class="hidden"><div class="panel" style="text-align:center"><div><span class="pill">HET ALFABETRAD</span> <button id="muteButton" class="secondary" type="button">🔊 Geluid aan</button></div><div class="wheel-wrap"><div class="pointer"></div><canvas id="wheel" width="700" height="700" aria-label="Alfabetrad"></canvas><div class="center-cap"></div></div><button id="spin" class="gold" style="width:100%;font-size:1.08rem">DRAAI HET RAD!</button><div id="wheelStatus" class="note" style="margin-top:12px">Klaar voor de volgende letter?</div></div>
+<div id="challenge" class="panel hidden" style="text-align:center"><div id="taskCategory" class="pill">CATEGORIE</div><div class="pill" style="margin-top:8px">JOUW LETTER IS</div><div id="letter" class="big-letter">A</div><div id="task" class="task"></div><div id="timer" class="timer">00:12</div><div class="row" style="margin-top:12px"><button id="wrong" class="secondary">Fout / geen antwoord</button><button id="correct" class="primary">Antwoord gegeven</button></div><p class="note">De groep beoordeelt het antwoord.</p></div>
+<div class="panel"><div class="stats"><span>Scorebord</span><span id="remainingLabel">Nog 10 vragen</span></div><div id="scoreboard"></div><button id="endGame" class="secondary" style="width:100%;margin-top:10px">Spel beëindigen</button></div></section>
+<section id="answerScreen" class="hidden"><div class="panel" style="text-align:center"><div class="kicker">ANTWOORDMOMENT</div><h2>Wie had het goed?</h2><div class="big-letter" id="answerLetter">A</div><div class="task" id="answerTask"></div><p class="note">Kies de speler die het goede antwoord gaf.</p><div id="answerPlayers" class="players"></div><button id="nobody" class="secondary" style="width:100%;margin-top:10px">Niemand had het goed</button><div class="stats" style="margin-top:16px"><span>Scorebord</span><span id="answerRemaining">—</span></div><div id="answerScoreboard"></div><button id="nextQuestion" class="primary hidden" style="width:100%;margin-top:15px">VOLGENDE VRAAG</button><button id="finishFromAnswer" class="secondary" style="width:100%;margin-top:9px">Spel beëindigen</button></div></section>
+<section id="results" class="panel hidden"><div class="kicker" style="text-align:center">DE UITSLAG</div><h2 style="text-align:center;color:var(--gold)">EINDSTAND</h2><div id="finalScores"></div><button id="playAgain" class="primary" style="width:100%;margin-top:16px">NOG EEN SPEL</button><button id="editPlayers" class="secondary" style="width:100%;margin-top:9px">SPELERS AANPASSEN</button></section>
+<section id="winnerSplash" class="hidden"><div class="winner-card"><div style="font-size:4rem">🏆</div><div class="kicker">NEONPULSE PARTY EDITION</div><h2>DE WINNAAR IS</h2><div id="winnerName">Winnaar</div><div style="color:var(--cyan);font-weight:900">GEWELDIG GESPEELD!</div><div id="winnerPoints" style="margin:12px 0 22px;color:var(--gold);font-weight:900">0 punten</div><button id="winnerContinue" class="gold" style="width:100%">BEKIJK DE EINDSTAND</button></div></section>
+<section id="legalInfo" class="panel legal-panel hidden"><h2 id="legalTitle">Informatie</h2><div id="legalText"></div><button id="closeLegal" class="secondary" style="width:100%;margin-top:14px">Terug</button></section>
+<section id="noAdsInfo" class="panel legal-panel hidden"><h2>Reclamevrij spelen</h2><p>We zijn van plan een eenmalige aankoop van € 1,49 aan te bieden om reclame uit te schakelen. De betaalfunctie is nog niet beschikbaar. Deze pagina voert geen betaling uit.</p><p>Wanneer de betaalfunctie klaar is, leggen we uit wat de aankoop inhoudt en hoe je een aankoop kunt herstellen.</p><button id="closeNoAds" class="secondary" style="width:100%">Terug</button></section>
+<footer><div>NeonPulse Party Edition</div><p><a href="#" id="privacyLink">Privacy</a><a href="#" id="termsLink">Gebruiksvoorwaarden</a><a href="#" id="noAdsLink">Reclamevrij € 1,49</a></p><p class="note">Reclame en betalingen zijn nog niet geactiveerd.</p></footer>
 </div>
 <script>
-const letters="ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-const colors=["#e84a5f","#f28e2b","#f4cf58","#59b878","#39b9c8","#4388d8","#7764bd","#c45aab"];
-const taskCategories={
- dieren:[
- "Noem een dier dat begint met de letter {L}.",
- "Noem een huisdier dat begint met de letter {L}.",
- "Noem een vogel die begint met de letter {L}."
- ],
- eten:[
- "Noem eten of drinken dat begint met de letter {L}.",
- "Noem fruit of groente dat begint met de letter {L}.",
- "Noem een gerecht dat begint met de letter {L}."
- ],
- beroepen:[
- "Noem een beroep dat begint met de letter {L}.",
- "Noem iemand die met gereedschap werkt en wiens beroep begint met de letter {L}."
- ],
- plaatsen:[
- "Noem een land dat begint met de letter {L}.",
- "Noem een plaats of stad die begint met de letter {L}.",
- "Noem een bekende plek die begint met de letter {L}."
- ],
- film:[
- "Noem een film of serie die begint met de letter {L}.",
- "Noem een artiest of muzikant met de letter {L}.",
- "Noem een personage uit een film dat begint met de letter {L}."
- ],
- gek:[
- "Noem iets grappigs dat begint met de letter {L}.",
- "Noem iets dat je absoluut niet in een koelkast verwacht.",
- "Verzin een gekke uitvinding die begint met de letter {L}.",
- "Noem iets dat je meeneemt naar een onbewoond eiland."
- ],
- sport:[
- "Noem een sport die begint met de letter {L}.",
- "Noem een sporter of sportclub met de letter {L}.",
- "Noem sportmateriaal dat begint met de letter {L}."
- ],
- voorwerpen:[
- "Noem iets dat je in huis vindt met de letter {L}.",
- "Noem een merk dat begint met de letter {L}.",
- "Noem gereedschap of een voorwerp dat begint met de letter {L}."
- ]
-};
-let activeCategories=Object.keys(taskCategories);
-let players=[], current=0, round=1, totalRounds=10, answerSeconds=10, rotation=0, busy=false, timerId=null, timeLeft=0, currentLetter=null, gameOver=false;
-const $=id=>document.getElementById(id);
-const wheel=$("wheel"), ctx=wheel.getContext("2d");
-function drawWheel(){
- const cx=350,cy=350,r=340,step=2*Math.PI/26;
- ctx.clearRect(0,0,700,700);
- letters.forEach((letter,i)=>{
- const start=-Math.PI/2+i*step, end=start+step;
- ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,start,end);ctx.closePath();
- ctx.fillStyle=colors[i%colors.length];ctx.fill();ctx.strokeStyle="#fff3d0";ctx.lineWidth=3;ctx.stroke();
- const mid=start+step/2;ctx.save();ctx.translate(cx+Math.cos(mid)*r*.76,cy+Math.sin(mid)*r*.76);ctx.rotate(mid+Math.PI/2);
- ctx.fillStyle="#241a31";ctx.font="bold 30px system-ui";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(letter,0,0);ctx.restore();
- });
-}
-
-let soundMuted=false;
-let audioCtx=null;
-let tickTimer=null;
-let tickCount=0;
-function getAudioContext(){
- if(!audioCtx){
- const AudioContextClass=window.AudioContext||window.webkitAudioContext;
- if(AudioContextClass) audioCtx=new AudioContextClass();
- }
- if(audioCtx && audioCtx.state==="suspended") audioCtx.resume();
- return audioCtx;
-}
-function playTick(intensity=1){
- if(soundMuted)return;
- const ac=getAudioContext();
- if(!ac)return;
- const osc=ac.createOscillator();
- const gain=ac.createGain();
- osc.type="square";
- osc.frequency.setValueAtTime(850+Math.random()*250,ac.currentTime);
- gain.gain.setValueAtTime(0.0001,ac.currentTime);
- gain.gain.exponentialRampToValueAtTime(0.045*intensity,ac.currentTime+0.004);
- gain.gain.exponentialRampToValueAtTime(0.0001,ac.currentTime+0.035);
- osc.connect(gain);gain.connect(ac.destination);
- osc.start();osc.stop(ac.currentTime+0.04);
-}
-function playFinishSound(){
- if(soundMuted)return;
- const ac=getAudioContext();
- if(!ac)return;
- [660,880,1100].forEach((freq,i)=>{
- const osc=ac.createOscillator(),gain=ac.createGain();
- osc.type="sine";osc.frequency.value=freq;
- gain.gain.setValueAtTime(0.0001,ac.currentTime+i*.09);
- gain.gain.exponentialRampToValueAtTime(0.08,ac.currentTime+i*.09+.015);
- gain.gain.exponentialRampToValueAtTime(0.0001,ac.currentTime+i*.09+.18);
- osc.connect(gain);gain.connect(ac.destination);
- osc.start(ac.currentTime+i*.09);osc.stop(ac.currentTime+i*.09+.2);
- });
-}
-function startWheelSound(){
- clearTimeout(tickTimer);tickCount=0;
- const tick=()=>{
- if(!busy || soundMuted)return;
- tickCount++;
- const progress=Math.min(1,tickCount/22);
- playTick(1-progress*.7);
- const delay=65+progress*180;
- tickTimer=setTimeout(tick,delay);
- };
- if(!soundMuted)tick();
-}
-function stopWheelSound(){
- clearTimeout(tickTimer);tickTimer=null;
- playFinishSound();
-}
-$("muteButton").onclick=()=>{
- soundMuted=!soundMuted;
- $("muteButton").setAttribute("aria-pressed",String(soundMuted));
- $("muteButton").setAttribute("aria-label",soundMuted?"Geluid inschakelen":"Geluid dempen");
- $("muteButton").textContent=soundMuted?"🔇 Geluid uit":"🔊 Geluid aan";
- if(soundMuted){clearTimeout(tickTimer);tickTimer=null;}
-};
-
-function renderPlayers(){
- const setupHtml=players.map((p,i)=>`<div class="player"><span class="dot" style="background:${colors[i%colors.length]}"></span><span class="name">${escapeHtml(p.name)}</span><button class="secondary" style="padding:5px 10px" data-remove="${i}" aria-label="Verwijder ${escapeHtml(p.name)}">×</button></div>`).join("");
- $("playersSetup").innerHTML=setupHtml;
- $("scoreboard").innerHTML=players.map((p,i)=>`<div class="scoreline"><span>${i+1}. ${escapeHtml(p.name)}</span><strong style="color:var(--gold)">${p.score} pt</strong></div>`).join("");
- $("remainingLabel").textContent=`Nog ${Math.max(0,totalRounds-questionCount)} vragen`;
-}
-function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
-$("addPlayer").onclick=()=>{
- const name=$("playerName").value.trim();
- if(!name)return;
- if(players.length>=8){alert("Maximaal 8 spelers.");return;}
- players.push({name,score:0});$("playerName").value="";renderPlayers();
-};
-$("playerName").addEventListener("keydown",e=>{if(e.key==="Enter")$("addPlayer").click()});
-$("playersSetup").addEventListener("click",e=>{const b=e.target.closest("[data-remove]");if(b){players.splice(Number(b.dataset.remove),1);renderPlayers()}});
-$("startGame").onclick=()=>{
- if(players.length<2){alert("Voeg minimaal 2 spelers toe.");return;}
- activeCategories=[...document.querySelectorAll('input[name="category"]:checked')].map(el=>el.value);
- if(activeCategories.length===0){alert("Kies minimaal één categorie.");return;}
- totalRounds=Number($("roundCount").value);answerSeconds=Number($("seconds").value);
- players.forEach(p=>p.score=0);questionCount=0;current=0;round=1;gameOver=false;
- $("setup").classList.add("hidden");$("results").classList.add("hidden");$("winnerSplash").classList.add("hidden");$("game").classList.remove("hidden");
- $("challenge").classList.add("hidden");$("spin").disabled=false;$("spin").textContent="DRAAI HET RAD!";$("wheelStatus").textContent="Klaar voor de volgende letter?";
- renderPlayers();
-};
-$("spin").onclick=()=>{
- if(busy||gameOver)return;
- busy=true;$("spin").disabled=true;$("challenge").classList.add("hidden");
- getAudioContext();
- startWheelSound();
- const idx=Math.floor(Math.random()*letters.length);currentLetter=letters[idx];
- const segment=360/26;
- // Segment i is centered at angle -90 + (i+.5)*segment.
- // CSS rotation places the chosen segment center beneath the top pointer.
- const desired=((360-(idx+.5)*segment)%360+360)%360;
- const normalized=((rotation%360)+360)%360;
- const delta=(desired-normalized+360)%360;
- rotation+=360*5+delta;
- wheel.style.transform=`rotate(${rotation}deg)`;
- $("wheelStatus").textContent="Het rad draait...";
- setTimeout(()=>{
- busy=false;stopWheelSound();$("wheelStatus").textContent="De letter is gevallen!";
- showChallenge();
- },5350);
-};
-function showChallenge(){
- $("challenge").classList.remove("hidden");$("letter").textContent=currentLetter;
- const available=activeCategories.flatMap(category=>
- taskCategories[category].map(text=>({category,text}))
- );
- const chosen=available[Math.floor(Math.random()*available.length)];
- const categoryNames={dieren:"DIEREN",eten:"ETEN & DRINKEN",beroepen:"BEROEPEN",plaatsen:"LANDEN & PLAATSEN",film:"FILM & MUZIEK",gek:"GEKKE OPDRACHT",sport:"SPORT",voorwerpen:"VOORWERPEN & MERKEN"};
- $("task").textContent=chosen.text.replaceAll("{L}",currentLetter);
- $("taskCategory").textContent=categoryNames[chosen.category];$("spin").textContent="VOLGENDE BEURT";
- timeLeft=answerSeconds;updateTimer();
- clearInterval(timerId);
- timerId=setInterval(()=>{timeLeft--;updateTimer();if(timeLeft<=0){clearInterval(timerId);$("timer").textContent="TIJD OM!";$("wrong").focus();}},1000);
- $("wheelStatus").textContent="Letter gekozen: "+currentLetter;
-}
+const $=id=>document.getElementById(id),letters="ABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""),colors=["#e84a5f","#f28e2b","#f4cf58","#59b878","#39b9c8","#4388d8","#7764bd","#c45aab"];
+const taskCategories={dieren:["Noem een dier dat begint met de letter {L}.","Noem een huisdier dat begint met de letter {L}.","Noem een vogel die begint met de letter {L}."],eten:["Noem eten of drinken dat begint met de letter {L}.","Noem fruit of groente dat begint met de letter {L}.","Noem een gerecht dat begint met de letter {L}."],beroepen:["Noem een beroep dat begint met de letter {L}.","Noem iemand die met gereedschap werkt en wiens beroep begint met de letter {L}."],plaatsen:["Noem een land dat begint met de letter {L}.","Noem een plaats of stad die begint met de letter {L}.","Noem een bekende plek die begint met de letter {L}."],film:["Noem een film of serie die begint met de letter {L}.","Noem een artiest of muzikant met de letter {L}.","Noem een personage uit een film dat begint met de letter {L}."],gek:["Noem iets grappigs dat begint met de letter {L}.","Noem iets dat je absoluut niet in een koelkast verwacht.","Verzin een gekke uitvinding die begint met de letter {L}.","Noem iets dat je meeneemt naar een onbewoond eiland."],sport:["Noem een sport die begint met de letter {L}.","Noem een sporter of sportclub met de letter {L}.","Noem sportmateriaal dat begint met de letter {L}."],voorwerpen:["Noem iets dat je in huis vindt met de letter {L}.","Noem een merk dat begint met de letter {L}.","Noem gereedschap of een voorwerp dat begint met de letter {L}."]};
+const categoryNames={dieren:"DIEREN",eten:"ETEN & DRINKEN",beroepen:"BEROEPEN",plaatsen:"LANDEN & PLAATSEN",film:"FILM & MUZIEK",gek:"GEKKE OPDRACHT",sport:"SPORT",voorwerpen:"VOORWERPEN & MERKEN"};
+let activeCategories=Object.keys(taskCategories),players=[],totalRounds=10,answerSeconds=12,rotation=0,busy=false,timerId=null,timeLeft=0,currentLetter=null,gameOver=false,questionCount=0,answerPoints=10,soundMuted=false,audioCtx=null,tickTimer=null;
+const wheel=$("wheel"),ctx=wheel.getContext("2d");
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function drawWheel(){const cx=350,cy=350,r=340,step=2*Math.PI/26;ctx.clearRect(0,0,700,700);letters.forEach((l,i)=>{const a=-Math.PI/2+i*step;ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,a,a+step);ctx.closePath();ctx.fillStyle=colors[i%colors.length];ctx.fill();ctx.strokeStyle="#fff3d0";ctx.lineWidth=3;ctx.stroke();const m=a+step/2;ctx.save();ctx.translate(cx+Math.cos(m)*r*.76,cy+Math.sin(m)*r*.76);ctx.rotate(m+Math.PI/2);ctx.fillStyle="#241a31";ctx.font="bold 30px system-ui";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(l,0,0);ctx.restore();});}
+function renderPlayers(){$("playersSetup").innerHTML=players.map((p,i)=>`<div class="player"><span class="dot" style="background:${colors[i%colors.length]}"></span><span style="flex:1">${esc(p.name)}</span><button class="secondary" data-remove="${i}" style="padding:4px 9px">×</button></div>`).join("");$("scoreboard").innerHTML=players.map((p,i)=>`<div class="scoreline"><span>${i+1}. ${esc(p.name)}</span><strong style="color:var(--gold)">${p.score} pt</strong></div>`).join("");$("remainingLabel").textContent=`Nog ${Math.max(0,totalRounds-questionCount)} vragen`;}
+function renderScores(id){$(""+id).innerHTML=[...players].sort((a,b)=>b.score-a.score).map((p,i)=>`<div class="scoreline"><span>${i+1}. ${esc(p.name)}</span><strong style="color:var(--gold)">${p.score} pt</strong></div>`).join("");}
+$("addPlayer").onclick=()=>{const n=$("playerName").value.trim();if(!n)return;if(players.length>=8){alert("Maximaal 8 spelers.");return;}players.push({name:n,score:0});$("playerName").value="";renderPlayers();};
+$("playerName").addEventListener("keydown",e=>{if(e.key==="Enter")$("addPlayer").click();});
+$("playersSetup").addEventListener("click",e=>{const b=e.target.closest("[data-remove]");if(b){players.splice(+b.dataset.remove,1);renderPlayers();}});
+function hideSections(){["setup","game","answerScreen","results","legalInfo","noAdsInfo"].forEach(id=>$(id).classList.add("hidden"));$("winnerSplash").classList.add("hidden");}
+$("introStart").onclick=()=>{$("introSplash").classList.add("hidden");hideSections();$("setup").classList.remove("hidden");};
+$("startGame").onclick=()=>{if(players.length<2){alert("Voeg minimaal 2 spelers toe.");return;}activeCategories=[...document.querySelectorAll('input[name="category"]:checked')].map(x=>x.value);if(!activeCategories.length){alert("Kies minimaal één categorie.");return;}totalRounds=+$("roundCount").value;answerSeconds=+$("seconds").value;players.forEach(p=>p.score=0);questionCount=0;gameOver=false;hideSections();$("game").classList.remove("hidden");$("challenge").classList.add("hidden");$("spin").disabled=false;$("spin").textContent="DRAAI HET RAD!";$("wheelStatus").textContent="Klaar voor de volgende letter?";renderPlayers();};
+$("muteButton").onclick=()=>{soundMuted=!soundMuted;$("muteButton").textContent=soundMuted?"🔇 Geluid uit":"🔊 Geluid aan";};
+function beep(freq=800,dur=.08){if(soundMuted)return;const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;if(!audioCtx)audioCtx=new AC();if(audioCtx.state==="suspended")audioCtx.resume();const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.frequency.value=freq;g.gain.setValueAtTime(.001,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(.05,audioCtx.currentTime+.005);g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+dur);o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+dur+.01);}
+$("spin").onclick=()=>{if(busy||gameOver)return;busy=true;$("spin").disabled=true;$("challenge").classList.add("hidden");const idx=Math.floor(Math.random()*26);currentLetter=letters[idx];const seg=360/26,desired=((360-(idx+.5)*seg)%360+360)%360,normal=((rotation%360)+360)%360;rotation+=1800+(desired-normal+360)%360;wheel.style.transform=`rotate(${rotation}deg)`;$("wheelStatus").textContent="Het rad draait...";let t=0;clearInterval(tickTimer);tickTimer=setInterval(()=>{beep(650+Math.random()*300,.025);if(++t>18)clearInterval(tickTimer);},150);setTimeout(()=>{busy=false;clearInterval(tickTimer);beep(1000,.16);$("wheelStatus").textContent="De letter is gevallen!";showChallenge();},5350);};
+function showChallenge(){const avail=activeCategories.flatMap(c=>taskCategories[c].map(text=>({c,text}))),chosen=avail[Math.floor(Math.random()*avail.length)];$("challenge").classList.remove("hidden");$("letter").textContent=currentLetter;$("task").textContent=chosen.text.replaceAll("{L}",currentLetter);$("taskCategory").textContent=categoryNames[chosen.c];timeLeft=answerSeconds;updateTimer();clearInterval(timerId);timerId=setInterval(()=>{if(timeLeft>0)timeLeft--;updateTimer();if(timeLeft<=0){clearInterval(timerId);$("timer").textContent="TIJD OM!";}},1000);}
 function updateTimer(){$("timer").textContent=`00:${String(Math.max(0,timeLeft)).padStart(2,"0")}`;$("timer").style.color=timeLeft<=3?"#ff405f":"#ff718a";}
-let questionCount = 0;
-let answerPoints = 10;
-function renderScores(targetId){
- const ranked=[...players].sort((a,b)=>b.score-a.score);
- $(targetId).innerHTML=ranked.map((p,i)=>`<div class="scoreline"><span>${i===0&&p.score>0?"★ ":""}${i+1}. ${escapeHtml(p.name)}</span><strong style="color:var(--gold)">${p.score} pt</strong></div>`).join("");
-}
-function showAnswerScreen(){
- clearInterval(timerId);
- $("game").classList.add("hidden");
- $("answerScreen").classList.remove("hidden");
- $("answerLetter").textContent=currentLetter||"—";
- $("answerTask").textContent=$("task").textContent;
- $("answerRemaining").textContent=`Vraag ${questionCount} / ${totalRounds}`;
- $("answerPlayers").innerHTML=players.map((p,i)=>
- `<button class="secondary" data-correct="${i}" style="display:flex;align-items:center;gap:10px;text-align:left">
- <span class="dot" style="display:inline-block;width:13px;height:13px;border-radius:50%;background:${colors[i%colors.length]}"></span>
- <span style="flex:1">${escapeHtml(p.name)}</span>
- <strong>+${answerPoints}</strong>
- </button>`
- ).join("");
- $("answerPlayers").querySelectorAll("[data-correct]").forEach(btn=>{
- btn.onclick=()=>{
- const idx=Number(btn.dataset.correct);
- players[idx].score+=answerPoints;
- lockAnswer(`${players[idx].name} krijgt ${answerPoints} punten.`);
- };
- });
- $("nobody").onclick=()=>lockAnswer("Niemand kreeg punten.");
- $("answerPlayers").classList.remove("hidden");
- $("nobody").classList.remove("hidden");
- $("nextQuestion").classList.add("hidden");
- renderScores("answerScoreboard");
-}
-function lockAnswer(message){
- $("answerPlayers").classList.add("hidden");
- $("nobody").classList.add("hidden");
- $("answerTask").textContent += " — " + message;
- renderScores("answerScoreboard");
- $("nextQuestion").classList.remove("hidden");
-}
-function finishAnswer(isCorrect){
- // Both buttons now simply advance to the answer screen; winner is selected there.
- if(gameOver)return;
- clearInterval(timerId);
- answerPoints = timeLeft > 5 ? 15 : 10;
- questionCount++;
- $("remainingLabel").textContent=`Nog ${Math.max(0,totalRounds-questionCount)} vragen`;
- showAnswerScreen();
-}
-$("correct").onclick=()=>finishAnswer(true);
-$("wrong").onclick=()=>finishAnswer(false);
-$("nextQuestion").onclick=()=>{
- if(questionCount >= totalRounds){showResults();return}
- $("answerScreen").classList.add("hidden");
- $("game").classList.remove("hidden");
- $("challenge").classList.add("hidden");
- $("spin").disabled=false;
- $("spin").textContent="DRAAI HET RAD!";
- $("wheelStatus").textContent="Klaar voor de volgende vraag.";
- renderPlayers();
-};
-$("finishFromAnswer").onclick=()=>showResults();
-$("endGame").onclick=()=>showResults();
-function makeConfetti(){
- const layer=$("confettiLayer");layer.innerHTML="";
- const palette=["#ff4fa3","#ffd66b","#5ff5ff","#a76bff","#64ef9b","#ff754f"];
- for(let i=0;i<90;i++){
-  const piece=document.createElement("span");piece.className="confetti-piece";
-  piece.style.left=(Math.random()*100)+"%";piece.style.background=palette[i%palette.length];
-  piece.style.setProperty("--fall",(2.7+Math.random()*2.8)+"s");piece.style.setProperty("--delay",(-Math.random()*4)+"s");
-  piece.style.setProperty("--drift",((Math.random()-.5)*180)+"px");piece.style.width=(6+Math.random()*8)+"px";piece.style.height=(9+Math.random()*12)+"px";
-  layer.appendChild(piece);
- }
-}
-function playCrowdCheer(){
- if(soundMuted)return;
- const ac=getAudioContext();if(!ac)return;
- const now=ac.currentTime;
- // Short synthetic applause-like noise bursts plus a rising celebratory tone.
- for(let i=0;i<34;i++){
-  const duration=.035+Math.random()*.045;
-  const buffer=ac.createBuffer(1,Math.floor(ac.sampleRate*duration),ac.sampleRate);
-  const data=buffer.getChannelData(0);
-  for(let j=0;j<data.length;j++)data[j]=(Math.random()*2-1)*(1-j/data.length);
-  const src=ac.createBufferSource(),gain=ac.createGain(),filter=ac.createBiquadFilter();
-  src.buffer=buffer;filter.type="highpass";filter.frequency.value=700+Math.random()*1800;
-  gain.gain.setValueAtTime(.0001,now+i*.065);gain.gain.exponentialRampToValueAtTime(.12,now+i*.065+.006);gain.gain.exponentialRampToValueAtTime(.0001,now+i*.065+duration);
-  src.connect(filter);filter.connect(gain);gain.connect(ac.destination);src.start(now+i*.065);src.stop(now+i*.065+duration);
- }
- [523,659,784,1046].forEach((f,i)=>{const osc=ac.createOscillator(),g=ac.createGain();osc.type="triangle";osc.frequency.setValueAtTime(f,now+.2+i*.13);g.gain.setValueAtTime(.0001,now+.2+i*.13);g.gain.exponentialRampToValueAtTime(.07,now+.22+i*.13);g.gain.exponentialRampToValueAtTime(.0001,now+.55+i*.13);osc.connect(g);g.connect(ac.destination);osc.start(now+.2+i*.13);osc.stop(now+.58+i*.13);});
-}
-function showResults(){
- renderPlayers(); // Keep the live scoreboard synchronized with final scores.
- gameOver=true;clearInterval(timerId);clearTimeout(tickTimer);
- $("game").classList.add("hidden");$("answerScreen").classList.add("hidden");$("results").classList.add("hidden");
- const ranked=[...players].sort((a,b)=>b.score-a.score);
- $("finalScores").innerHTML=ranked.map((p,i)=>`<div class="scoreline"><span>${i===0?"🏆 ":""}${i+1}. ${escapeHtml(p.name)}</span><strong style="color:var(--gold)">${p.score} pt</strong></div>`).join("");
- if(!ranked.length){$("winnerSplash").classList.add("hidden");$("results").classList.remove("hidden");return;}
- const topScore=ranked[0].score;const winners=ranked.filter(p=>p.score===topScore);
- $("winnerName").textContent=winners.map(p=>p.name).join(" & ");
- $("winnerPoints").textContent=`${topScore} punten${winners.length>1?" • gelijkspel":""}`;
- makeConfetti();$("winnerSplash").classList.remove("hidden");playCrowdCheer();
-}
-$("winnerContinue").onclick=()=>{$("winnerSplash").classList.add("hidden");$("results").classList.remove("hidden")};
-$("playAgain").onclick=()=>{$("results").classList.add("hidden");$("winnerSplash").classList.add("hidden");$("game").classList.remove("hidden");players.forEach(p=>p.score=0);questionCount=0;current=0;round=1;gameOver=false;$("challenge").classList.add("hidden");$("spin").disabled=false;$("spin").textContent="DRAAI HET RAD!";renderPlayers()};
-$("editPlayers").onclick=()=>{$("results").classList.add("hidden");$("setup").classList.remove("hidden")};
-function makeIntroConfetti(){
-  const layer=$("introConfetti");
-  if(!layer)return;
-  const palette=["#ff4fa3","#ffd66b","#5ff5ff","#a76bff","#64ef9b","#ff754f"];
-  for(let i=0;i<42;i++){
-    const piece=document.createElement("span");
-    piece.style.left=(Math.random()*100)+"%";
-    piece.style.background=palette[i%palette.length];
-    piece.style.setProperty("--fall",(3+Math.random()*4)+"s");
-    piece.style.setProperty("--delay",(-Math.random()*6)+"s");
-    piece.style.setProperty("--drift",((Math.random()-.5)*140)+"px");
-    piece.style.transform="rotate("+(Math.random()*180)+"deg)";
-    layer.appendChild(piece);
-  }
-}
-$("introStart").onclick=()=>{
-  $("introSplash").classList.add("hidden");
-  $("setup").classList.remove("hidden");
-};
-makeIntroConfetti();
+function finishAnswer(){if(gameOver)return;clearInterval(timerId);answerPoints=timeLeft>5?15:10;questionCount++;$("game").classList.add("hidden");$("answerScreen").classList.remove("hidden");$("answerLetter").textContent=currentLetter||"—";$("answerTask").textContent=$("task").textContent;$("answerRemaining").textContent=`Vraag ${questionCount} / ${totalRounds}`;$("answerPlayers").innerHTML=players.map((p,i)=>`<button class="secondary" data-correct="${i}" style="display:flex;align-items:center;gap:10px;text-align:left"><span class="dot" style="background:${colors[i%colors.length]}"></span><span style="flex:1">${esc(p.name)}</span><strong>+${answerPoints}</strong></button>`).join("");$("answerPlayers").classList.remove("hidden");$("nobody").classList.remove("hidden");$("nextQuestion").classList.add("hidden");renderScores("answerScoreboard");$("answerPlayers").querySelectorAll("[data-correct]").forEach(b=>b.onclick=()=>{const p=players[+b.dataset.correct];p.score+=answerPoints;lockAnswer(`${p.name} krijgt ${answerPoints} punten.`);});$("nobody").onclick=()=>lockAnswer("Niemand kreeg punten.");}
+function lockAnswer(msg){$("answerPlayers").classList.add("hidden");$("nobody").classList.add("hidden");$("answerTask").textContent=$("task").textContent+" — "+msg;renderScores("answerScoreboard");$("nextQuestion").classList.remove("hidden");}
+$("correct").onclick=finishAnswer;$("wrong").onclick=finishAnswer;
+$("nextQuestion").onclick=()=>{if(questionCount>=totalRounds){showResults();return;}hideSections();$("game").classList.remove("hidden");$("challenge").classList.add("hidden");$("spin").disabled=false;$("spin").textContent="DRAAI HET RAD!";$("wheelStatus").textContent="Klaar voor de volgende vraag.";renderPlayers();};
+$("finishFromAnswer").onclick=showResults;$("endGame").onclick=showResults;
+function showResults(){gameOver=true;clearInterval(timerId);clearInterval(tickTimer);$("game").classList.add("hidden");$("answerScreen").classList.add("hidden");const ranked=[...players].sort((a,b)=>b.score-a.score);$("finalScores").innerHTML=ranked.map((p,i)=>`<div class="scoreline"><span>${i===0?"🏆 ":""}${i+1}. ${esc(p.name)}</span><strong style="color:var(--gold)">${p.score} pt</strong></div>`).join("");if(!ranked.length){$("results").classList.remove("hidden");return;}const top=ranked[0].score,winners=ranked.filter(p=>p.score===top);$("winnerName").textContent=winners.map(p=>p.name).join(" & ");$("winnerPoints").textContent=`${top} punten${winners.length>1?" • gelijkspel":""}`;$("winnerSplash").classList.remove("hidden");}
+$("winnerContinue").onclick=()=>{$("winnerSplash").classList.add("hidden");$("results").classList.remove("hidden");};
+$("playAgain").onclick=()=>{players.forEach(p=>p.score=0);questionCount=0;gameOver=false;hideSections();$("game").classList.remove("hidden");$("challenge").classList.add("hidden");$("spin").disabled=false;$("spin").textContent="DRAAI HET RAD!";renderPlayers();};
+$("editPlayers").onclick=()=>{hideSections();$("setup").classList.remove("hidden");};
+function openLegal(title,body){hideSections();$("legalTitle").textContent=title;$("legalText").innerHTML=body;$("legalInfo").classList.remove("hidden");window.scrollTo(0,0);}
+$("privacyLink").onclick=e=>{e.preventDefault();openLegal("Privacyverklaring",`<p>Deze versie werkt lokaal op het toestel en vraagt geen account. Spelersnamen en scores worden alleen tijdens de speelsessie gebruikt en worden door deze spelcode niet naar een server verstuurd.</p><p>Advertenties, advertentiecookies, analytics en betaalfuncties zijn op dit moment niet geactiveerd. Als die later worden toegevoegd, moet deze verklaring vóór de activatie worden bijgewerkt.</p><p>Vul hier het officiële contactadres van NeonPulse Labs in voordat je de website publiek aanbiedt.</p>`);};
+$("termsLink").onclick=e=>{e.preventDefault();openLegal("Gebruiksvoorwaarden",`<p>Je mag dit spel gebruiken voor persoonlijk en recreatief gebruik. Het spel wordt aangeboden zoals het is. Spelers beoordelen antwoorden zelf; er is geen automatische spraakcontrole.</p><p>Er is momenteel geen betaalde functie beschikbaar en via deze website wordt geen aankoop afgesloten. Eventuele toekomstige aankopen en advertenties krijgen aanvullende voorwaarden voordat ze worden geactiveerd.</p><p>Vul hier de officiële contactgegevens van NeonPulse Labs in voordat je deze voorwaarden als definitief publiceert.</p>`);};
+$("noAdsLink").onclick=e=>{e.preventDefault();hideSections();$("noAdsInfo").classList.remove("hidden");window.scrollTo(0,0);};
+$("closeLegal").onclick=()=>{hideSections();$("setup").classList.remove("hidden");};$("closeNoAds").onclick=()=>{hideSections();$("setup").classList.remove("hidden");};
 drawWheel();
 </script>
 </body>
