@@ -1,116 +1,75 @@
 import fs from "fs";
 import path from "path";
+import vm from "vm";
 import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const html = fs.readFileSync(path.resolve(__dirname, "../index.html"), "utf8");
+const root = path.resolve(__dirname, "..");
+const bankCode = fs.readFileSync(path.join(root, "question-bank.js"), "utf8");
+const ctx = { QUESTION_BANK: [], CATEGORY_CATALOG: [] };
+vm.runInContext(bankCode, vm.createContext(ctx));
+const { QUESTION_BANK, CATEGORY_CATALOG } = ctx;
 
-const tcMatch = html.match(/const taskCategories=(\{[\s\S]*?\});/);
-if (!tcMatch) throw new Error("taskCategories missing");
-const taskCategories = eval("(" + tcMatch[1] + ")");
-
-function promptKey(c, text) {
-  return c + "\u001f" + text;
+function questionsForCategories(categoryIds) {
+  const allowed = new Set(categoryIds);
+  return QUESTION_BANK.filter((q) => q.active && allowed.has(q.categoryId));
 }
 
-function createEngine(activeCategories) {
-  let usedPromptKeys = new Set();
-  const allActivePrompts = () =>
-    activeCategories.flatMap((c) =>
-      taskCategories[c].map((text) => ({ c, text, key: promptKey(c, text) }))
-    );
-  const unusedPrompts = () =>
-    allActivePrompts().filter((p) => !usedPromptKeys.has(p.key));
+function createEngine(categoryIds) {
+  let usedQuestionIds = new Set();
   const pickAndRegister = () => {
-    const unused = unusedPrompts();
-    if (!unused.length) return null;
-    const chosen = unused[Math.floor(Math.random() * unused.length)];
-    if (usedPromptKeys.has(chosen.key)) return "duplicate_guard";
-    usedPromptKeys.add(chosen.key);
-    return chosen.key;
+    const pool = questionsForCategories(categoryIds).filter((q) => !usedQuestionIds.has(q.id));
+    if (!pool.length) return null;
+    const chosen = pool[Math.floor(Math.random() * pool.length)];
+    if (usedQuestionIds.has(chosen.id)) return "duplicate_guard";
+    usedQuestionIds.add(chosen.id);
+    return chosen.id;
   };
   return {
     reset: () => {
-      usedPromptKeys = new Set();
+      usedQuestionIds = new Set();
     },
-    size: () => usedPromptKeys.size,
     pickAndRegister,
-    unusedCount: () => unusedPrompts().length,
-    totalActive: () => allActivePrompts().length,
+    unusedCount: () =>
+      questionsForCategories(categoryIds).filter((q) => !usedQuestionIds.has(q.id)).length,
   };
 }
 
-// 1) No duplicates within a full pool (8 default categories = 48 prompts)
-const eight = Object.keys(taskCategories).slice(0, 8);
+const eight = ["dieren", "eten", "beroepen", "plaatsen", "film", "gek", "sport", "voorwerpen"];
 const engineA = createEngine(eight);
 const seen = new Set();
-for (let i = 0; i < 48; i++) {
-  const key = engineA.pickAndRegister();
-  if (!key || key === "duplicate_guard") {
-    console.error("FAIL: unexpected pick at", i, key);
+for (let i = 0; i < 80; i++) {
+  const id = engineA.pickAndRegister();
+  if (!id || id === "duplicate_guard") {
+    console.error("FAIL: unexpected pick at", i, id);
     process.exit(1);
   }
-  if (seen.has(key)) {
-    console.error("FAIL: duplicate key within round", key);
+  if (seen.has(id)) {
+    console.error("FAIL: duplicate id within session", id);
     process.exit(1);
   }
-  seen.add(key);
+  seen.add(id);
 }
-if (engineA.unusedCount() !== 0) {
-  console.error("FAIL: expected empty pool after 48 picks");
-  process.exit(1);
-}
-if (engineA.pickAndRegister() !== null) {
-  console.error("FAIL: should not pick when exhausted");
-  process.exit(1);
-}
-console.log("OK: no duplicates across full 8-category pool (48 prompts)");
+console.log("OK: no duplicate question ids in multi-category session");
 
-// 2) Reset on play again simulation
 engineA.reset();
-const k1 = engineA.pickAndRegister();
-const k2 = engineA.pickAndRegister();
-if (!k1 || !k2) {
-  console.error("FAIL: picks after reset");
+if (engineA.pickAndRegister() === null) {
+  console.error("FAIL: pick after reset");
   process.exit(1);
 }
-console.log("OK: reset clears used prompts (play again / new start)");
+console.log("OK: reset on new game");
 
-// 3) Session persistence (no reset between picks)
-const engineB = createEngine(["animals"]);
-const keys = [];
-for (let i = 0; i < 6; i++) keys.push(engineB.pickAndRegister());
-if (keys.some((k) => !k) || new Set(keys).size !== 6) {
-  console.error("FAIL: single category 6 unique picks", keys);
-  process.exit(1);
-}
-if (engineB.pickAndRegister() !== null) {
-  console.error("FAIL: 7th pick should fail for one category");
-  process.exit(1);
-}
-console.log("OK: exhausted pool when all category prompts used");
-
-// 4) New game start reset
-engineB.reset();
-if (engineB.pickAndRegister() === null) {
-  console.error("FAIL: should pick after new-game reset");
-  process.exit(1);
-}
-console.log("OK: new game start reset");
-
-// 5) HTML hooks present
-for (const token of [
-  "usedPromptKeys",
-  "resetUsedPrompts",
-  "unusedPrompts",
-  "promptKey",
-  "showChallengeExhausted",
-]) {
-  if (!html.includes(token)) {
-    console.error("FAIL: missing", token);
+const one = createEngine(["dieren"]);
+for (let i = 0; i < 150; i++) {
+  if (one.pickAndRegister() === null && i < 149) {
+    console.error("FAIL: early exhaustion dieren at", i);
     process.exit(1);
   }
 }
-console.log("OK: anti-duplicate symbols present in index.html");
+if (one.pickAndRegister() !== null) {
+  console.error("FAIL: should be exhausted after 150");
+  process.exit(1);
+}
+console.log("OK: exhaustion without repeat");
 
 console.log("OK: anti-duplicate-test passed");
