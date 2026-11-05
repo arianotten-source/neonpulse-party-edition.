@@ -104,9 +104,11 @@ if (read("index.html") !== indexBefore) throw new Error("website index.html chan
 if (read("question-bank.js") !== bankBefore) throw new Error("question bank changed");
 
 const wwwHtml = read("www/index.html");
-if (!wwwHtml.includes('<script type="module" src="android-ads.js"></script>')) {
-  throw new Error("android copy missing ads module");
-}
+const adsTag = '<script type="module" src="android-ads.js"></script>';
+const tagAt = wwwHtml.lastIndexOf(adsTag);
+const playAt = wwwHtml.indexOf('$("playAgain").onclick');
+if (tagAt < 0) throw new Error("android copy missing ads module");
+if (playAt < 0 || tagAt < playAt) throw new Error("ads script is placed before the game buttons");
 if (indexBefore.includes("android-ads.js") || indexBefore.includes("ca-app-pub-")) {
   throw new Error("website contains ad code");
 }
@@ -120,6 +122,19 @@ for (const text of [ads, policy, manifest, strings, indexBefore, bankBefore]) {
 }
 if (!ads.includes("playAgain") || !ads.includes("editPlayers")) throw new Error("leave buttons");
 if (!ads.includes("isTesting: true") || !ads.includes("npa: true")) throw new Error("test request flags");
+for (const marker of [
+  "ADMOB_INITIALIZED",
+  "INTERSTITIAL_PREPARING",
+  "INTERSTITIAL_LOADED",
+  "INTERSTITIAL_LOAD_FAILED",
+  "INTERSTITIAL_SHOW_REQUESTED",
+  "INTERSTITIAL_DISMISSED",
+  "INTERSTITIAL_SHOW_FAILED",
+  "showInterstitial",
+]) {
+  if (!ads.includes(marker)) throw new Error("missing log or show call: " + marker);
+}
+if (manifest.includes("tools:node=\"remove\"")) throw new Error("AD_ID permission is stripped");
 if (!ads.includes("GOOGLE_TEST_INTERSTITIAL_ID") || !policy.includes(GOOGLE_TEST_INTERSTITIAL_ID)) {
   throw new Error("android script test unit");
 }

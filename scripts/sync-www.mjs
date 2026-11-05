@@ -32,10 +32,9 @@ export function syncWww(root = defaultRoot) {
 
   let html = fs.readFileSync(path.join(www, "index.html"), "utf8");
   const tag = '<script type="module" src="android-ads.js"></script>';
+  if (!html.includes("</body>")) throw new Error("body ontbreekt in index.html");
   if (!html.includes(tag)) {
-    const marker = '<script src="question-bank.js"></script>';
-    if (!html.includes(marker)) throw new Error("question-bank script ontbreekt in index.html");
-    html = html.replace(marker, `${marker}\n${tag}`);
+    html = html.replace("</body>", `${tag}\n</body>`);
     fs.writeFileSync(path.join(www, "index.html"), html);
   }
 
