@@ -15,13 +15,15 @@ function computePendingPoints(left) {
   return t > 5 ? 15 : 10;
 }
 
-function awardPoints({ pending, nobody, picks }) {
-  const awarded = !nobody && picks.length > 0 ? pending : 0;
+function awardFromPicks(pending, picks) {
   const scores = [0, 0, 0];
-  if (awarded > 0) picks.forEach((i) => {
-    scores[i] += awarded;
-  });
-  return { awarded, scores };
+  const seen = new Set();
+  for (const i of picks) {
+    if (seen.has(i)) continue;
+    seen.add(i);
+    if (pending > 0) scores[i] += pending;
+  }
+  return scores;
 }
 
 const cases = [
@@ -36,24 +38,26 @@ for (const c of cases) {
   }
 }
 
-let r = awardPoints({ pending: 15, nobody: false, picks: [0] });
-if (r.awarded !== 15 || r.scores[0] !== 15) throw new Error("single winner failed");
+let scores = awardFromPicks(15, [0]);
+if (scores[0] !== 15) throw new Error("single winner failed");
 
-r = awardPoints({ pending: 15, nobody: false, picks: [0, 2] });
-if (r.scores[0] !== 15 || r.scores[2] !== 15 || r.scores[1] !== 0) throw new Error("multi winner failed");
+scores = awardFromPicks(15, [0, 2]);
+if (scores[0] !== 15 || scores[2] !== 15 || scores[1] !== 0) {
+  throw new Error("multi winner failed");
+}
 
-r = awardPoints({ pending: 15, nobody: true, picks: [] });
-if (r.awarded !== 0) throw new Error("nobody should give 0");
+scores = awardFromPicks(15, []);
+if (scores.some((s) => s !== 0)) throw new Error("nobody picks should give 0");
 
-r = awardPoints({ pending: 0, nobody: false, picks: [1] });
-if (r.awarded !== 0 || r.scores[1] !== 0) throw new Error("timeout picks should give 0");
+scores = awardFromPicks(0, [1]);
+if (scores[1] !== 0) throw new Error("timeout picks should give 0");
 
 const mustHave = [
   "answerKnown",
-  "ANTWOORD GEWETEN!",
+  ">ANTWOORD<",
   "winnerSelectScreen",
-  "confirmWinners",
-  "BEVESTIG WINNAARS",
+  "pickPlayerAsWinner",
+  "pickNobody",
   "nobodyPick",
   "GAME_PHASE",
   "lockQuestion",
@@ -64,7 +68,15 @@ for (const s of mustHave) {
   if (!html.includes(s)) throw new Error("missing marker: " + s);
 }
 
-const mustNot = ["Fout / geen antwoord", "Antwoord gegeven", "answerScreen", "confirmPoints", "finishAnswer"];
+const mustNot = [
+  "Fout / geen antwoord",
+  "Antwoord gegeven",
+  "answerScreen",
+  "confirmPoints",
+  "finishAnswer",
+  "BEVESTIG WINNAARS",
+  "confirmWinners",
+];
 for (const s of mustNot) {
   if (html.includes(s)) throw new Error("should not contain: " + s);
 }

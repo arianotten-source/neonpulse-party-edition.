@@ -24,9 +24,8 @@ function rankPlayers(list) {
 
 const mustHave = [
   "player-card",
-  "confirmWinners",
   "winnerSelectScreen",
-  "selectedAnswerIndices",
+  "pickPlayerAsWinner",
   "startWinnerCelebration",
   "stopCelebration",
   "winnerRanking",
@@ -37,13 +36,22 @@ const mustHave = [
   "GAME_PHASE",
   "partyModeLabel",
   "IEDEREEN SPEELT MEE",
+  "winnerCelebrationPlayedThisGame",
 ];
 
 for (const s of mustHave) {
   if (!html.includes(s)) throw new Error(`Missing expected marker: ${s}`);
 }
 
-const mustNot = ["Aan de beurt", "turnIndex", "currentTurnPlayer", "JOUW LETTER IS", "answerScreen"];
+const mustNot = [
+  "Aan de beurt",
+  "turnIndex",
+  "currentTurnPlayer",
+  "JOUW LETTER IS",
+  "answerScreen",
+  "BEVESTIG WINNAARS",
+  "winnerContinue",
+];
 for (const s of mustNot) {
   if (html.includes(s)) throw new Error(`Should not contain: ${s}`);
 }
