@@ -1,0 +1,29 @@
+{
+  "name": "neonpulse-party-edition.",
+  "version": "1.0.0",
+  "description": "Pim Pam Pet – NeonPulse Party Edition (web + Capacitor)",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "sync:www": "node scripts/sync-www.mjs",
+    "test": "node scripts/sprint1-check.mjs && node scripts/anti-duplicate-test.mjs && node scripts/category-engine-test.mjs && node scripts/question-quality-test.mjs && node scripts/answer-flow-test.mjs && node scripts/preview-flow-test.mjs && node scripts/party-mode-test.mjs && node scripts/round-flow-test.mjs && node scripts/categories-layout-test.mjs && node scripts/layout-playtest.mjs",
+    "cap:sync": "npm run sync:www && npx cap sync android"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arianotten-source/neonpulse-party-edition..git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/arianotten-source/neonpulse-party-edition./issues"
+  },
+  "homepage": "https://github.com/arianotten-source/neonpulse-party-edition.#readme",
+  "dependencies": {
+    "@capacitor/android": "^8.6.0",
+    "@capacitor/cli": "^8.6.0",
+    "@capacitor/core": "^8.6.0",
+    "@capacitor/splash-screen": "^8.0.2"
+  }
+}

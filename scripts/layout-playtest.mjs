@@ -48,7 +48,9 @@ try {
 }
 
 const viewports = [
-  { name: "phone-portrait", width: 390, height: 844 },
+  { name: "phone-360", width: 360, height: 800 },
+  { name: "phone-390", width: 390, height: 844 },
+  { name: "phone-412", width: 412, height: 915 },
   { name: "phone-landscape", width: 844, height: 390 },
   { name: "tablet", width: 834, height: 1194 },
   { name: "laptop", width: 1366, height: 768 },
@@ -84,19 +86,20 @@ for (const vp of viewports) {
     document.getElementById("introSplash").classList.add("hidden");
     const task = document.getElementById("task");
     task.textContent =
-      "Noem een voorbeeld met de letter M voor een compacte layouttest.";
+      "Noem een lang voorbeeld met de letter M dat over meerdere regels loopt zodat de vraagtekst, de countdown en de antwoordknop samen op een telefoonscherm moeten passen zonder dat de pagina zelf scrolt.";
     document.getElementById("letter").textContent = "M";
     document.getElementById("timer").textContent = "00:12";
-    document.getElementById("game").classList.remove("hidden");
+    document.getElementById("game").classList.add("hidden");
+    document.getElementById("questionScreen").classList.remove("hidden");
     document.getElementById("challenge").classList.remove("hidden");
-    document.getElementById("appRoot").classList.add("in-game");
+    document.getElementById("appRoot").classList.add("question-step", "play-chrome");
     document.body.style.overflow = "hidden";
   });
 
   const result = await page.evaluate(
     ({ vw, vh }) => {
       const doc = document.documentElement;
-      const ids = ["wheel", "letter", "task", "timer", "answerKnown", "spin"];
+      const ids = ["letter", "task", "timer", "answerKnown"];
       const rects = Object.fromEntries(
         ids.map((id) => [id, document.getElementById(id).getBoundingClientRect()])
       );
@@ -112,7 +115,7 @@ for (const vp of viewports) {
   );
 
   const scrollOk = result.pageScroll <= 1 && result.bodyScroll <= 1;
-  const visOk = ["wheel", "letter", "task", "timer", "answerKnown", "spin"].every(
+  const visOk = ["letter", "task", "timer", "answerKnown"].every(
     (id) => inViewport(result.rects[id], vp.width, vp.height)
   );
 

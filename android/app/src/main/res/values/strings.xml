@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Pim Pam Pet – NeonPulse Party Edition</string>
+    <string name="title_activity_main">Pim Pam Pet – NeonPulse Party Edition</string>
+    <string name="package_name">com.neonpulselabs.pimpampet.party</string>
+    <string name="custom_url_scheme">com.neonpulselabs.pimpampet.party</string>
+</resources>
