@@ -1,5 +1,5 @@
 /**
- * Preview correction: instant winner picks, no confirm buttons, auto advance.
+ * Winner picks stay open until WINNAARS BEVESTIGEN.
  */
 import fs from "fs";
 import path from "path";
@@ -40,8 +40,9 @@ const mustHave = [
   ">ANTWOORD<",
   "pickPlayerAsWinner",
   "pickNobody",
-  "completeRoundAfterPicks",
-  "scheduleCompleteRoundAfterPicks",
+  "confirmWinners",
+  "WINNAARS BEVESTIGEN",
+  "awardSelectedWinnersOnce",
   "winnerCelebrationPlayedThisGame",
   "scheduleResultsReveal",
   "revealFinalResults",
@@ -55,8 +56,8 @@ for (const s of mustHave) {
 }
 
 const mustNot = [
-  "BEVESTIG WINNAARS",
-  "confirmWinners",
+  "WINNER_PICK_FINISH_MS",
+  "scheduleCompleteRoundAfterPicks",
   "winnerContinue",
   "BEKIJK DE EINDSTAND",
   "ANTWOORD GEWETEN!",

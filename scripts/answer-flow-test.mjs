@@ -63,6 +63,9 @@ const mustHave = [
   "lockQuestion",
   "computePendingPoints",
   "TIJD VERSTREKEN",
+  "confirmWinners",
+  "WINNAARS BEVESTIGEN",
+  "awardSelectedWinnersOnce",
 ];
 for (const s of mustHave) {
   if (!html.includes(s)) throw new Error("missing marker: " + s);
@@ -74,8 +77,6 @@ const mustNot = [
   "answerScreen",
   "confirmPoints",
   "finishAnswer",
-  "BEVESTIG WINNAARS",
-  "confirmWinners",
 ];
 for (const s of mustNot) {
   if (html.includes(s)) throw new Error("should not contain: " + s);

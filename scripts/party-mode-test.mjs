@@ -37,6 +37,8 @@ const mustHave = [
   "partyModeLabel",
   "IEDEREEN SPEELT MEE",
   "winnerCelebrationPlayedThisGame",
+  "confirmWinners",
+  "WINNAARS BEVESTIGEN",
 ];
 
 for (const s of mustHave) {
@@ -49,7 +51,8 @@ const mustNot = [
   "currentTurnPlayer",
   "JOUW LETTER IS",
   "answerScreen",
-  "BEVESTIG WINNAARS",
+  "WINNER_PICK_FINISH_MS",
+  "scheduleCompleteRoundAfterPicks",
   "winnerContinue",
 ];
 for (const s of mustNot) {

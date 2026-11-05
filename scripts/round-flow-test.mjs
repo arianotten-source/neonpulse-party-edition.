@@ -40,6 +40,7 @@ function createRound(totalRounds) {
     screen: "question",
     totalRounds,
     gameOver: false,
+    finishing: false,
   };
   return {
     state,
@@ -58,9 +59,16 @@ function createRound(totalRounds) {
       state.screen = "noWinner";
     },
     pick(i) {
-      if (state.phase !== "WINNER_SELECTION" || state.settled || state.awarded.has(i)) return;
+      if (state.phase !== "WINNER_SELECTION" || state.settled || state.finishing || state.awarded.has(i)) return;
       state.awarded.add(i);
-      if (state.pending > 0) state.scores[i] += state.pending;
+    },
+    confirm() {
+      if (state.finishing || state.settled || state.gameOver || state.phase !== "WINNER_SELECTION") return;
+      state.finishing = true;
+      if (state.pending > 0) {
+        for (const i of state.awarded) state.scores[i] += state.pending;
+      }
+      this.finish();
     },
     finish() {
       if (state.settled || state.gameOver) return;
@@ -87,9 +95,10 @@ const single = createRound(3);
 single.answer(8);
 single.pick(0);
 single.pick(0);
+if (single.state.scores[0] !== 0) throw new Error("points awarded before confirm");
+single.confirm();
+single.confirm();
 if (single.state.scores[0] !== 15) throw new Error("double pick awarded twice");
-single.finish();
-single.finish();
 if (single.state.questionCount !== 1 || single.state.screen !== "wheel") {
   throw new Error("round finished more than once");
 }
@@ -98,10 +107,11 @@ const multi = createRound(2);
 multi.answer(4);
 multi.pick(0);
 multi.pick(2);
+if (multi.state.scores[0] !== 0 || multi.state.scores[2] !== 0) throw new Error("points awarded before confirm");
+multi.confirm();
 if (multi.state.scores[0] !== 10 || multi.state.scores[2] !== 10 || multi.state.scores[1] !== 0) {
   throw new Error("multi winner points");
 }
-multi.finish();
 if (multi.state.screen !== "wheel") throw new Error("first round should return to the wheel");
 multi.state.phase = "NO_WINNER";
 multi.timeout();
