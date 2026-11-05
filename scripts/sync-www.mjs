@@ -7,21 +7,53 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const root = path.resolve(__dirname, "..");
-const www = path.join(root, "www");
+const defaultRoot = path.resolve(__dirname, "..");
 
 const files = ["index.html", "question-bank.js", "assets/branding/pim-pam-pet-logo.png"];
+const androidOnly = [
+  ["scripts/admob-policy.mjs", "admob-policy.mjs"],
+  ["scripts/android-ads.js", "android-ads.js"],
+];
 
-fs.mkdirSync(www, { recursive: true });
+export function syncWww(root = defaultRoot) {
+  const www = path.join(root, "www");
+  fs.mkdirSync(www, { recursive: true });
 
-for (const name of files) {
-  const src = path.join(root, name);
-  const dest = path.join(www, name);
-  fs.mkdirSync(path.dirname(dest), { recursive: true });
-  if (!fs.existsSync(src)) {
-    console.error(`FAIL: bron ontbreekt: ${name}`);
+  for (const name of files) {
+    const src = path.join(root, name);
+    const dest = path.join(www, name);
+    fs.mkdirSync(path.dirname(dest), { recursive: true });
+    if (!fs.existsSync(src)) {
+      throw new Error(`bron ontbreekt: ${name}`);
+    }
+    fs.copyFileSync(src, dest);
+    console.log(`OK: ${name} -> www/${name}`);
+  }
+
+  let html = fs.readFileSync(path.join(www, "index.html"), "utf8");
+  const tag = '<script type="module" src="android-ads.js"></script>';
+  if (!html.includes(tag)) {
+    const marker = '<script src="question-bank.js"></script>';
+    if (!html.includes(marker)) throw new Error("question-bank script ontbreekt in index.html");
+    html = html.replace(marker, `${marker}\n${tag}`);
+    fs.writeFileSync(path.join(www, "index.html"), html);
+  }
+
+  for (const [from, to] of androidOnly) {
+    const src = path.join(root, from);
+    const dest = path.join(www, to);
+    if (!fs.existsSync(src)) throw new Error(`bron ontbreekt: ${from}`);
+    fs.copyFileSync(src, dest);
+    console.log(`OK: ${from} -> www/${to}`);
+  }
+}
+
+const isDirect = process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+if (isDirect) {
+  try {
+    syncWww();
+  } catch (error) {
+    console.error(`FAIL: ${error.message}`);
     process.exit(1);
   }
-  fs.copyFileSync(src, dest);
-  console.log(`OK: ${name} -> www/${name}`);
 }
