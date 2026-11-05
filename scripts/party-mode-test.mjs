@@ -35,6 +35,8 @@ const mustHave = [
   "prefers-reduced-motion",
   "DE WINNAARS ZIJN",
   "GAME_PHASE",
+  "partyModeLabel",
+  "IEDEREEN SPEELT MEE",
 ];
 
 for (const s of mustHave) {
